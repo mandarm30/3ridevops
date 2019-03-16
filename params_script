@@ -1,0 +1,632 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2017.11.24 17:30:54 =~=~=~=~=~=~=~=~=~=~=~=
+
+usprod41:/opt/app/p3wtg1z2/sbpprod1/vs7998/paramsAuto
+> 
+usprod41:/opt/app/p3wtg1z2/sbpprod1/vs7998/paramsAuto
+> cat script.sh
+#!/bin/ksh
+###################################################################
+# Script Name: script.sh                                          #
+# Created by : Viraj Salunke                                      #
+# Purpose    : This script will help to comment/uncomment params  #
+#              params                                             #
+# Usage      : Script will help comment/uncomment params.cfg file #
+#              based on user choice for any given scenario.       #
+#              Can be used during CR or Outage or Maintenance     #
+# Date       : 08/29/2017 v1.0                                    #
+###################################################################
+clear
+
+echo "          *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~"
+echo "          *        MAKE SURE PARAMS ARE UNCOMMENTED IN ORIGINAL FILE       *"
+echo "          *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~"
+
+sleep 2
+
+path=$HOME/vs7998/paramsAuto
+mailList="vs00335236@techmahindra.com"
+#Params Commenting and Uncommenting
+clear
+
+echo "User "`who am i| cut -d " " -f1` "logged in at" `date` >> $HOME/scripts/vs7998/paramsAuto/userlog.log
+
+echo "Welcome "`who am i | cut -d " " -f1`
+echo "                      Params Commenting - Uncommenting on Allen DC   "
+echo "          *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~~~*~*~*~~*~~"
+echo "          *                                                              *"
+echo "          *  1)Allen A2B Allen Commented/Uncommenting                    *"
+echo "          *  2)Allen Q1 & Q2   Commenting/Uncommenting                   *"
+echo "          *  3)Allen USPROD41 Commenting/Uncommenting  (Server&Instance) *"
+echo "          *  4)Allen USPROD42 Commenting/Uncommenting  (Server&Instance) *"
+echo "          *  5)Allen USPROD43 Commenting/Uncommenting  (Server&Instance) *"
+echo "          *  6)Allen USPROD44 Commenting/Uncommenting  (Server&Instance) *"
+echo "          *  7)Allen Care Portal Servers Commenting/Uncommenting         *"
+echo "          *  0)Exit                                                      *"
+echo "          *~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~~*~*~**~"
+echo "Enter the Option:"
+
+read NUM
+
+case $NUM in
+#---------------------------------------------------------------------------------------------------------------------------------------
+#Entire Allen Commenting Uncommenting
+1)
+echo " a)Comment Entire Allen"
+echo " b)Uncomment Entire Allen"
+echo " 0)Exit"
+echo " Enter the Option: a or b"
+
+read q
+
+case $q in
+#Comment Entire Allen
+a)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z[2-5].[1-4]/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 USPROD42 USPROD43 USPROD44" >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo "Params are commented for USPROD41 USPROD42 USPROD43 USPROD44 "
+;;
+#Uncomment Entire Allen
+b)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z[2-5].[1-4]/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 USPROD42 USPROD43 USPROD44 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo "Params are uncommented for USPROD41 USPROD42 USPROD43 USPROD44 "
+;;
+0)
+echo "Script Exiting"
+sleep 3
+exit
+;;
+*)
+echo "You've entered an incorrect option."
+sleep 3
+${path}/script.sh
+;;
+esac
+;;
+#---------------------------------------------------------------------------------------------------------------------------------------
+#Allen Quarter-wise Commenting Uncommenting
+2)
+echo " a)Comment Entire Allen Q1"
+echo " b)Uncomment Entire Allen Q1"
+echo " c)Comment Entire Allen Q2"
+echo " d)Uncomment Entire Allen Q2"
+echo " 0)Exit"
+echo " Enter the Option: "
+
+read q
+
+case $q in
+#Comment Entire Allen Q1
+a)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z[2-3].[1-2]/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 USPROD42 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD41 USPROD42 "
+;;
+#Uncomment Entire Allen Q1
+b)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z[2-3].[1-2]/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 USPROD42 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD41 USPROD42 "
+;;
+#Comment Entire Allen Q2
+c)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z[4-5].[3-4]/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 USPROD44 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD43 USPROD44 "
+;;
+#Uncomment Entire Allen Q2
+d)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z[4-5].[3-4]/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 USPROD44 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD43 USPROD44 "
+;;
+0)
+echo "Script Exiting"
+sleep 3
+;;
+*)
+echo "  You've entered an incorrect option."
+sleep 3
+${path}/script.sh
+;;
+esac
+;;
+#---------------------------------------------------------------------------------------------------------------------------------------
+#Allen USPROD41 Commenting Uncommenting
+3)
+echo " a)Comment Entire Allen USPROD41"
+echo " b)Uncomment Entire Allen USPROD41"
+echo " c)Comment Allen z2.1"
+echo " d)Uncomment Allen z2.1"
+echo " e)Comment Allen z2.2"
+echo " f)Uncomment Allen z2.2"
+echo " 0)Exit"
+echo "Enter the Option: "
+
+read q
+
+case $q in
+
+#Comment Allen z2 entirely
+a)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z2.[1-2]/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD41 "
+;;
+#Uncomment Allen z2 entirely
+b)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z2.[1-2]/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD41 "
+;;
+
+#Comment Allen Z2.1
+c)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z2.1/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 - SBPPROD1 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD41 - SBPPROD1 "
+;;
+
+#Uncomment Allen Z2.1
+d)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z2.1/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 - SBPPROD1 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD41 - SBPPROD1 "
+;;
+#Comment Allen Z2.2
+e)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z2.2/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 - SBPPROD2 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD41 - SBPPROD2 "
+;;
+#Comment Allen Z2.2
+f)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z2.2/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD41 - SBPPROD2 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD41 - SBPPROD2 "
+;;
+0)
+echo "Script Exiting"
+sleep 3
+;;
+*)
+echo "  You've entered an incorrect option."
+sleep 3
+${path}/script.sh
+;;
+esac
+;;
+#---------------------------------------------------------------------------------------------------------------------------------------
+#Allen USPROD42 Commenting Uncommenting
+4)
+echo " a)Comment Entire Allen USPROD42"
+echo " b)Uncomment Entire Allen USPROD42"
+echo " c)Comment Allen z3.1"
+echo " d)Uncomment Allen z3.1"
+echo " e)Comment Allen z3.2"
+echo " f)Uncomment Allen z3.2"
+echo " 0)Exit"
+echo "Enter the Option: "
+
+read q
+
+case $q in
+
+#Comment Allen z3 entirely
+a)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z3.[1-2]/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD42 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD42 "
+;;
+#Uncomment Allen z3 entirely
+b)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z3.[1-2]/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD42 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD42 "
+;;
+#Comment Allen Z3.1
+c)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z3.1/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD42 - SBPPROD1 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD42 - SBPPROD1 "
+;;
+#Uncomment Allen Z3.1
+d)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z3.1/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD42 - SBPPROD1 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD42 - SBPPROD1 "
+;;
+#Comment Allen Z3.2
+e)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z3.2/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD42 - SBPPROD2 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD42 - SBPPROD2 "
+;;
+#Comment Allen Z3.2
+f)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z3.2/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD42 - SBPPROD2 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD42 - SBPPROD2 "
+;;
+0)
+echo "Script Exiting"
+sleep 3
+;;
+*)
+echo "  You've entered an incorrect option."
+sleep 3
+${path}/script.sh
+;;
+esac
+;;
+#---------------------------------------------------------------------------------------------------------------------------------------
+#Allen USPROD43 Commenting Uncommenting
+5)
+echo " a)Comment Entire Allen USPROD43"
+echo " b)Uncomment Entire Allen USPROD43"
+echo " c)Comment Allen z4.1"
+echo " d)Uncomment Allen z4.1"
+echo " e)Comment Allen z4.2"
+echo " f)Uncomment Allen z4.2"
+echo " 0)Exit"
+echo "Enter the Option: "
+
+read q
+
+case $q in
+
+#Comment Allen z4 entirely
+a)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z4.[3-4]/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD43 "
+;;
+#Uncomment Allen z4 entirely
+b)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z4.[3-4]/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD43 "
+;;
+#Comment Allen Z4.1
+c)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z4.3/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 - sbpprod3 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD43 - sbpprod3 "
+;;
+#Uncomment Allen Z4.3
+d)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z4.3/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 - SBPPROD3 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD43 - SBPPROD3 "
+;;
+#Comment Allen Z4.2
+e)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z4.4/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 - sbpprod4 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD43 - sbpprod4 "
+;;
+#Uncomment Allen Z4.2
+f)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z4.4/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD43 - SBPPROD4 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD43 - SBPPROD4 "
+;;
+0)
+echo "Script Exiting"
+sleep 3
+;;
+*)
+echo "  You've entered an incorrect option."
+sleep 3
+${path}/script.sh
+;;
+esac
+;;
+#---------------------------------------------------------------------------------------------------------------------------------------
+#Allen USPROD44 Commenting Uncommenting
+6)
+echo " a)Comment Entire Allen USPROD44"
+echo " b)Uncomment Entire Allen USPROD44"
+echo " c)Comment Allen z5.1"
+echo " d)Uncomment Allen z5.1"
+echo " e)Comment Allen z5.2"
+echo " f)Uncomment Allen z5.2"
+echo " 0)Exit"
+echo "Enter the Option: "
+
+read q
+
+case $q in
+
+#Comment Allen z5 entirely
+a)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z5.[3-4]/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD44 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD44 "
+;;
+#Uncomment Allen z5 entirely
+b)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z5.[3-4]/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD44 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD44 "
+;;
+#Comment Allen Z5.3
+c)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z5.3/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD44 - SBPPROD3 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD44 - SBPPROD3 "
+;;
+#Uncomment Allen Z5.3
+d)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z5.3/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD44 - SBPPROD3 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD44 - SBPPROD3 "
+;;
+
+#Comment Allen Z5.4
+e)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z5.4/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below instance at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD44 - SBPPROD4 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD44 - SBPPROD4 "
+;;
+
+#Uncomment Allen Z5.4
+f)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/p3wtg1z5.4/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below servers at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD44 - SBPPROD4 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD44 - SBPPROD4 "
+;;
+0)
+echo "Script Exiting"
+sleep 3
+;;
+*)
+echo "  You've entered an incorrect option."
+sleep 3
+${path}/script.sh
+;;
+esac
+;;
+#---------------------------------------------------------------------------------------------------------------------------------------
+#Allen Care Portal Servers Commenting Uncommenting
+7)
+echo " a)Comment   usprod37"
+echo " b)Uncomment usprod37"
+echo " c)Comment   usprod38"
+echo " d)Uncomment usprod38"
+echo " e)Comment   usprod39"
+echo " f)Uncomment usprod39"
+echo " g)Comment   usprod40"
+echo " h)Uncomment usprod40"
+echo " 0)Exit"
+
+read q
+
+case $q in
+
+#Comment Allen usprod37
+a)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod37/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " USPROD37 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD37 "
+;;
+#Uncomment Allen usprod37
+b)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod37/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " usprod37 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD37 "
+;;
+#Comment Allen usprod38
+c)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod38/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " usprod38 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+clear
+;;
+#Uncomment Allen usprod38
+d)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod38/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " usprod37 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD38 "
+;;
+#Comment Allen usprod39
+e)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod39/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " usprod39 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD38 "
+;;
+#Uncomment Allen usprod39
+f)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod39/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " usprod39 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD39 "
+;;
+#Comment Allen usprod40
+g)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod40/s/^/#/g' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are commented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " usprod40 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+    rm ${path}/mail.txt
+echo " Allen Params are commented for USPROD40 "
+;;
+#Uncomment Allen usprod40
+h)
+original=`echo "${path}/originalparams.cfg"`
+        sed '/usprod40/s/^[#^t]*//' ${original} > test.txt ; mv test.txt ${original}
+                echo " Allen Params are uncommented for below Care Portal Server at `date` by User" `who am i| cut -d " " -f1` > ${path}/mail.txt
+                echo " usprod40 " >> ${path}/mail.txt
+        cat mail.txt | mailx -s "Params" ${mailList}
+        rm ${path}/mail.txt
+echo " Allen Params are uncommented for USPROD40 "
+;;
+0)
+echo "Script Exiting"
+sleep 3
+;;
+*)
+echo "  You've entered an incorrect option."
+sleep 3
+${path}/script.sh
+;;
+esac
+;;
+
+0)
+clear
+exit
+;;
+
+*)
+echo "  You've entered an incorrect option."
+sleep 2
+${path}/script.sh
+;;
+
+esac
+usprod41:/opt/app/p3wtg1z2/sbpprod1/vs7998/paramsAuto
+> 
