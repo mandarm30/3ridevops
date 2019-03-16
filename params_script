@@ -1,8 +1,6 @@
 =~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2017.11.24 17:30:54 =~=~=~=~=~=~=~=~=~=~=~=
 
 usprod41:/opt/app/p3wtg1z2/sbpprod1/vs7998/paramsAuto
-> 
-usprod41:/opt/app/p3wtg1z2/sbpprod1/vs7998/paramsAuto
 > cat script.sh
 #!/bin/ksh
 ###################################################################
