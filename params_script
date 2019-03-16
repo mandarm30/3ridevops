@@ -622,7 +622,7 @@ exit
 ;;
 
 *)
-echo "  You've entered an incorrect option."
+echo "  You've entered an incorrect option. Please enter correct option."
 sleep 2
 ${path}/script.sh
 ;;
